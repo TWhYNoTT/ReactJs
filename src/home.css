@@ -16,6 +16,9 @@ form {
     border-radius: 5px;
     padding: 50px;
     margin-bottom: 20px;
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 @media only screen and (max-width: 700px) {
@@ -97,6 +100,7 @@ form {
 .post {}
 
 .post-header {
+
     margin-bottom: 5px;
 }
 
