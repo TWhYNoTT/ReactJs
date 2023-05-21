@@ -1,22 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function NewPost() {
-    const [subject, setSubject] = useState("");
+    const { createPost } = useContext(AuthContext);
+    const [header, setHeader] = useState("");
     const [body, setBody] = useState("");
+    const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubjectChange = (event) => {
-        setSubject(event.target.value);
+
+    const handleHeaderChange = (event) => {
+        setHeader(event.target.value);
     };
 
     const handleBodyChange = (event) => {
         setBody(event.target.value);
     };
 
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]);
+
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (subject.length < 3) {
+        if (header.length < 3) {
             setErrorMessage("Subject must be at least three characters long.");
             return;
         }
@@ -25,25 +35,15 @@ function NewPost() {
             setErrorMessage("Body must be at least three characters long.");
             return;
         }
+        setIsSubmitting(true)
+        const message = await createPost(header, body, image);
 
-        const response = await fetch('http://localhost:8000/api/post', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': localStorage.getItem('x-auth-token')
-            },
-            body: JSON.stringify({
-                header: subject,
-                body: body
-            })
-        });
-        const data = await response.json();
-        console.log(data)
-        if (response.ok) {
+        setErrorMessage(message);
 
-        }
-        setSubject("");
+        setIsSubmitting(false)
+        setHeader("");
         setBody("");
+        setImage("");
         setErrorMessage("");
     };
 
@@ -51,16 +51,26 @@ function NewPost() {
         <form onSubmit={handleSubmit}>
             <label>
                 Subject:
-                <input type="text" value={subject} onChange={handleSubjectChange} />
+                <input type="text" value={header} onChange={handleHeaderChange} />
             </label>
             <label>
                 Body:
                 <textarea value={body} onChange={handleBodyChange}></textarea>
             </label>
+            <label htmlFor="image">Image:</label>
+            <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
+
+            />
             {errorMessage && (
                 <p style={{ color: "red" }}>{errorMessage}</p>
             )}
-            <button type="submit">Post</button>
+
+            {!isSubmitting && (<button type="submit">Post</button>)}
         </form>
     );
 }

@@ -1,11 +1,12 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from "../context/AuthContext";
+import React, { useState } from 'react';
+import { useAuth } from "../context/AuthContext";
+
 
 const Post = ({ post }) => {
     const [editedPost, setEditedPost] = useState({ header: post.header, body: post.body });
     const [isEditable, setEditable] = useState(false);
     const [isDeleting, setDeleting] = useState(false);
-    const { user } = useContext(AuthContext);
+    const { user, updatePost, deletePost } = useAuth();
 
     const handleHeaderChange = (e) => {
         setEditedPost({ ...editedPost, header: e.target.value });
@@ -15,54 +16,30 @@ const Post = ({ post }) => {
         setEditedPost({ ...editedPost, body: e.target.value });
     }
 
-    const handleEdit = () => {
+    const handleEdit = async () => {
         if (isEditable) {
-            // Send edited post to the server
-            fetch(`http://localhost:8000/api/post/${post._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': localStorage.getItem('x-auth-token'),
-                },
-                body: JSON.stringify(editedPost)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Update the post header and body in the UI
-                        post.header = editedPost.header;
-                        post.body = editedPost.body;
-                        setEditable(false);
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+            const success = await updatePost(post._id, editedPost);
+            if (success) {
+                // Update the post header and body in the UI
+                post.header = editedPost.header;
+                post.body = editedPost.body;
+                setEditable(false);
+            }
         } else {
             setEditable(true);
         }
     }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         setDeleting(true);
-        // Send delete request to the server
-        fetch(`http://localhost:8000/api/post/${post._id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': localStorage.getItem('x-auth-token'),
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    // Remove the post from the UI
-                    setDeleting(false);
-                    window.location.reload(); // Refresh the page to reflect the changes
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        const success = await deletePost(post._id);
+        if (success) {
+            // Remove the post from the UI
+            setDeleting(false);
+            window.location.reload(); // Refresh the page to reflect the changes
+        }
     }
+
 
     return (
         <div className="post-conttainer">

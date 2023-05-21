@@ -6,7 +6,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const { login } = useContext(AuthContext);
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
@@ -30,13 +30,14 @@ const LoginForm = () => {
             return;
         }
 
-        try {
-            await login(email, password); // call the login method from the AuthContext
-            setError(""); // clear any existing error messages
-        } catch (error) {
-            console.error(error);
-            setError("Invalid email or password");
-        }
+
+        setIsSubmitting(true)
+        const message = await login(email, password); // call the login method from the AuthContext
+        setIsSubmitting(false)
+        setError(""); // clear any existing error messages
+        if (message)
+            setError(message);
+
     };
 
     return (
@@ -49,7 +50,7 @@ const LoginForm = () => {
                 Password:
                 <input type="password" value={password} onChange={handlePasswordChange} />
             </label>
-            <button type="submit">Login</button>
+            {!isSubmitting && (<button type="submit">Login</button>)}
             {error && <p className="error">{error}</p>}
         </form>
     );

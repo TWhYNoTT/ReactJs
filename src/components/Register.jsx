@@ -9,6 +9,7 @@ const RegistrationForm = () => {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const { register } = useContext(AuthContext);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
@@ -61,9 +62,13 @@ const RegistrationForm = () => {
             setError("Invalid email address");
             return;
         }
-
-        await register(firstName, lastName, email, password);
-
+        setIsSubmitting(true)
+        const message = await register(firstName, lastName, email, password);
+        setIsSubmitting(false)
+        if (message) {
+            setError(message);
+            return;
+        }
         setError(""); // clear any existing error messages
     };
 
@@ -93,7 +98,7 @@ const RegistrationForm = () => {
                 Email:
                 <input type="email" value={email} onChange={handleEmailChange} />
             </label>
-            <button type="submit">Register</button>
+            {!isSubmitting && (<button type="submit">Register</button>)}
             {error && <p className="error">{error}</p>}
         </form>
     );

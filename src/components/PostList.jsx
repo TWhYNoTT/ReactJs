@@ -3,54 +3,34 @@ import NewPost from './NewPost'
 import { AuthContext } from "../context/AuthContext";
 import Post from "./Post";
 
-
 function PostList() {
-    const [page, setPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(false);
-    const [posts, setPosts] = useState([]);
+
+    const [isRendered, setIsRendered] = useState(false);
+    const { isAuthenticated, posts, fetchPosts, hasMore, isLoading } = useContext(AuthContext);
+    const [page, setPage] = useState(0);
     const observerTarget = useRef(null);
-    const { isAuthenticated } = useContext(AuthContext);
-
-
 
     useEffect(() => {
-        setIsLoading(true);
-        const fetchPosts = async () => {
-            try {
-
-                const response = await fetch(`http://192.168.1.25:8000/api/post?page=${page}`, {
-                    method: "GET",
-
-                });
-                const data = await response.json();
-                setPosts((prevPosts) => [...prevPosts, ...data.posts]);
-                setIsLoading(false);
-                setHasMore(data.posts.length > 0);
-            } catch (error) {
-                console.error(error);
-                setIsLoading(false);
-            }
-        };
-        if (hasMore) {
-            fetchPosts();
+        if (hasMore && isRendered) {
+            fetchPosts(page);
         }
-    }, [page, hasMore]);
 
+    }, [page, hasMore, isRendered]);
 
+    useEffect(() => {
+        setIsRendered(true)
+    }, []);
 
-
-
-
+    // infinite scroll
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
+
                 if (entry.isIntersecting && hasMore && !isLoading) {
                     setPage((prevPage) => prevPage + 1);
                 }
             });
         });
-
         const target = observerTarget.current;
         if (target) {
             observer.observe(target);
@@ -64,17 +44,13 @@ function PostList() {
         };
     }, [hasMore, page, isLoading]);
 
-    useEffect(() => {
-        setHasMore(true)
-    }, []);
+
+
 
     return (
-
-
         <>
             {isAuthenticated && <NewPost />}
             {posts.map((post) => (
-
                 <Post key={post._id} post={post} />
             ))}
             <div ref={observerTarget}></div>
@@ -87,4 +63,3 @@ function PostList() {
 
 
 export default PostList;
-
