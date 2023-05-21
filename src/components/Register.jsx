@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { ApiContext } from "../context/ApiContext";
 
 const RegistrationForm = () => {
     const [firstName, setFirstName] = useState("");
@@ -8,7 +8,7 @@ const RegistrationForm = () => {
     const [repeatPassword, setRepeatPassword] = useState("");
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
-    const { register } = useContext(AuthContext);
+    const { register } = useContext(ApiContext);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleFirstNameChange = (event) => {

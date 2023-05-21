@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import NewPost from './NewPost'
-import { AuthContext } from "../context/AuthContext";
+import { ApiContext } from "../context/ApiContext";
 import Post from "./Post";
 
 function PostList() {
 
     const [isRendered, setIsRendered] = useState(false);
-    const { isAuthenticated, posts, fetchPosts, hasMore, isLoading } = useContext(AuthContext);
+    const { isAuthenticated, posts, fetchPosts, hasMore, isLoading } = useContext(ApiContext);
     const [page, setPage] = useState(0);
     const observerTarget = useRef(null);
 

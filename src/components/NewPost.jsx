@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { ApiContext } from "../context/ApiContext";
 
 function NewPost() {
-    const { createPost } = useContext(AuthContext);
+    const { createPost } = useContext(ApiContext);
     const [header, setHeader] = useState("");
     const [body, setBody] = useState("");
     const [image, setImage] = useState(null);

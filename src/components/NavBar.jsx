@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { ApiContext } from "../context/ApiContext";
 
 
 function Navbar() {
-    const { isAuthenticated, user, logout } = useContext(AuthContext);
+    const { isAuthenticated, user, logout } = useContext(ApiContext);
 
     const guestLinks = (
         <ul>

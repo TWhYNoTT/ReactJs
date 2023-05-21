@@ -2,9 +2,9 @@ import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import request from "../api/request";
 
-const AuthContext = createContext();
+const ApiContext = createContext();
 
-function AuthProvider({ children }) {
+function ApiProvider({ children }) {
     const navigate = useNavigate();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [token, setToken] = useState();
@@ -111,18 +111,18 @@ function AuthProvider({ children }) {
     const value = { isAuthenticated, user, login, register, logout, updatePost, deletePost, createPost, fetchPosts, posts, hasMore, isLoading };
 
     return (
-        <AuthContext.Provider value={value}>
+        <ApiContext.Provider value={value}>
             {children}
-        </AuthContext.Provider>
+        </ApiContext.Provider>
     );
 }
 
 function useAuth() {
-    const context = React.useContext(AuthContext);
+    const context = React.useContext(ApiContext);
     if (context === undefined) {
         throw new Error("useAuth must be used witahin an AuthProvider");
     }
     return context;
 }
 
-export { AuthProvider, AuthContext, useAuth };
+export { ApiProvider, ApiContext, useAuth };

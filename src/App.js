@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { ApiProvider } from "./context/ApiContext";
 import Navbar from "./components/NavBar";
 
 import PostList from "./components/PostList";
@@ -10,7 +10,7 @@ import Register from "./components/Register";
 
 function App() {
   return (
-    <AuthProvider>
+    <ApiProvider>
       <Navbar />
       <div className="container">
         <Routes>
@@ -21,7 +21,7 @@ function App() {
         </Routes>
       </div>
 
-    </AuthProvider>
+    </ApiProvider>
   );
 }
 
