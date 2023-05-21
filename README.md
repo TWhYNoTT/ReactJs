@@ -1,6 +1,6 @@
-# [Project Name]
+# [Blog Post]
 
-[Blog post]
+[React Blog Post App]
 
 ## Prerequisites
 
@@ -28,15 +28,19 @@ npm install
 
 ## Configuration
 
-1. Create a `.env` file at the root of your project.
+1. Open the .env file located at the root of your project.
 
-2. Add any necessary environment variables to your `.env` file. For example:
+```bash
+open .env
+```
+
+2. Change the value of REACT_APP_API_URL to your desired API URL. For example, if your API is hosted on http://localhost:3000/api, change the REACT_APP_API_URL value to:
 
 ```bash
 REACT_APP_API_URL=http://localhost:3000/api
 ```
 
-3. Save the changes to your `.env` file.
+3. Save the changes to your .env file.
 
 ## Running the App
 
@@ -46,6 +50,7 @@ REACT_APP_API_URL=http://localhost:3000/api
 npm start
 ```
 
-2. Open your web browser and navigate to `http://localhost:3000` to view the app.
+2. Open your web browser and navigate to `http://localhost:3001` to view the app. 
+3. why port 3001 because 3000 is reserved by backend server
 
 That's it! Your React app is now set up and running. 
