@@ -50,6 +50,7 @@ REACT_APP_API_URL=http://localhost:3000/api
 npm start
 ```
 
-2. Open your web browser and navigate to `http://localhost:3000` to view the app.
+2. Open your web browser and navigate to `http://localhost:3001` to view the app. 
+3. why port 3001 because 3000 is reserved by backend server
 
 That's it! Your React app is now set up and running. 
