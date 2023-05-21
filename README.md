@@ -1,6 +1,6 @@
-# [Project Name]
+# [Blog Post]
 
-[Blog post]
+[React Blog Post App]
 
 ## Prerequisites
 
